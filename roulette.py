@@ -2,31 +2,37 @@ from collections import deque
 from random import randrange
 
 
-class Game:
-    player = None
-    patron = None
-    stop_drum = None
-    shoot = None
-    drum = None
-    revolver = None
-    give_revolver = None
+class Game():
 
-    @classmethod
-    def hi(cls):
+    def hi(self):
         print("Добро пожаловать в игру рулетку!\nCколько игроков будет участвовать?")
-        cls.player = int(input())
+        self.player = int(input())
 
-    @classmethod
-    def revolver_do(cls):
+    def revolver_do(self):
         print("Pевольвер зарядили!")
-        cls.revolver = deque([False for i in range(6)])
-        cls.patron = randrange(0, 6)
-        cls.revolver[cls.patron] = True
+        self.revolver = deque([False for i in range(6)])
+        self.patron = randrange(0, 6)
+        self.revolver[self.patron] = True
 
-    @classmethod
-    def game(cls):
+    def game(self):
         print("Крутится барабан... Нажмите Enter, чтобы остановить барабан.")
-        cls.stop_drum = input()
-        cls.drum = randrange(0, 6)
+        self.stop_drum = input()
+        self.drum = randrange(0, 6)
         print("Стреляйте! Нажмите Enter")
-        cls.shoot = input()
+        self.shoot = input()
+
+    def start(self):
+        for i in range(self.player):
+            self.game()
+            if self.patron == self.drum:
+                print(f"{i + 1}-й игрок убит! Игра завершена.")
+                break
+            if self.patron != self.drum:
+                print(f"{i + 1}-й игрок выиграл!")
+                if i + 1 == self.player:
+                    print("Конец игры")
+                else:
+                    print('Продолжаем играть ;)')
+                    self.revolver.rotate(-1)
+                    print("Нажмите Enter, чтобы передать револьвер другому игроку.")
+                    self.give_revolver = input()
